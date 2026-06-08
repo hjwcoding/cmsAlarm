@@ -36,22 +36,6 @@ const querystring = require('querystring');
 const zlib = require('zlib');
 
 // ─────────────────────────────────────────────
-// 설정
-// ─────────────────────────────────────────────
-const CONFIG = {
-  host: 'jira.kwic.co.kr',
-  port: 80,
-  username: '황재웅',
-  password: 'kwic5539!!',
-  defaults: {
-    pid: '11704',
-    issuetype: '11101',
-    assignee: '황재웅',
-    priority: '3',
-  },
-};
-
-// ─────────────────────────────────────────────
 // 유틸
 // ─────────────────────────────────────────────
 function httpRequest(options, body = null) {
@@ -296,20 +280,20 @@ async function createTicket(jar, tokens, ticketData) {
   const dueStr = `${due.getFullYear()}/${pad(due.getMonth()+1)}/${pad(due.getDate())}`;
 
   const fields = {
-    pid:                   ticketData.pid            || CONFIG.defaults.pid,
-    issuetype:             ticketData.issuetype      || CONFIG.defaults.issuetype,
+    pid:                   ticketData.pid            || CONFIG_pid,
+    issuetype:             ticketData.issuetype      || CONFIG_issuetype,
     atl_token:             tokens.atlToken,
     formToken:             tokens.formToken,
     summary:               ticketData.summary,
     customfield_11203:     ticketData.customerInfo   || '',
     customfield_10705:     ticketData.receiptRoute   || '-1',
     customfield_10404:     ticketData.receiptTime    || nowStr,
-    assignee:              ticketData.assignee       || CONFIG.defaults.assignee,
+    assignee:              ticketData.assignee       || CONFIG_assignee,
     customfield_11201:     ticketData.relatedUsers   || '',
     customfield_10503:     ticketData.receiptContent || '',
     customfield_10405:     ticketData.completeTime   || '',
     customfield_10502:     ticketData.actionContent  || '',
-    priority:              ticketData.priority       || CONFIG.defaults.priority,
+    priority:              ticketData.priority       || CONFIG_priority,
     'dnd-dropzone':        '',
     'customfield_11111':   '',
     'customfield_11111:1': '',
