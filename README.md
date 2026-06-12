@@ -43,7 +43,7 @@ Jira 티켓    다음 주기 대기
 | 브라우저 자동화 | **Playwright** (Chromium headless) |
 | 스케줄러 | node-cron |
 | 이슈 추적 | **Jira REST API** |
-| 알림 | 다우메신저 API |
+| 알림 | 메신저 API |
 | Runtime | Node.js |
 
 ---
