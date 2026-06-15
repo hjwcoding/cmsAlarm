@@ -19,7 +19,7 @@
  *
  *  09: GET /secure/RapidBoard.jspa
  *      → Cookie: 새 JSESSIONID + seraph.rememberme.cookie + xsrf(|lin)
- *      → 200, X-AUSERNAME: 황재웅  ← 로그인 확인
+ *      → 200, X-AUSERNAME: 홍길동  ← 로그인 확인
  *        HTML에 "로그아웃" 있음
  *
  *  27: POST /secure/QuickCreateIssue!default.jspa?decorator=none
@@ -362,12 +362,12 @@ async function main() {
     pid:            '11704',
     issuetype:      '11101',              // 문의접수
     summary:        '자동생성 테스트 티켓',
-    customerInfo:   '우리은행wincms',
+    customerInfo:   '은행cms',
     receiptContent: '자동화 스크립트로 생성한 티켓입니다.',
     actionContent:  '조치내용 없음',
     receiptRoute:   '-1',
     priority:       '3',
-    assignee:       '황재웅',
+    assignee:       '홍길동',
     // dueDate: '2026/04/10',
     // receiptTime: '2026/04/07 09:00',
   };

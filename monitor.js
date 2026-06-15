@@ -4,6 +4,7 @@ const cron = require('node-cron');
 const { v4: uuidv4 } = require('uuid');
 const { createJiraTicket } = require('./jiraTicketSend');
 require('dotenv').config();
+const { insertLog } = require('./db');
 
 const DAOU_HEADERS = {
   'Content-Type': 'application/json',
@@ -61,7 +62,7 @@ async function sendDaouAlert(post, issueKey = null) {
   if (!daouCookie) await daouLogin();
 
   const message = [
-    '📋 WinCMS 알림',
+    '📋 cms 알림',
     `유형    : ${post.type}`,
     `이름    : ${post.name}`,
     `회사    : ${post.company}`,
@@ -70,7 +71,7 @@ async function sendDaouAlert(post, issueKey = null) {
     `담당    : ${post.handler}`,
     `일시    : ${post.date}`,
     issueKey ? `티켓    : (${issueKey}) 이 생성되었습니다.` : '티켓    : 생성 실패',
-    `자세한 티켓 상세내용은 WINCMS 게시판을 참고해서 작성해 주시기 바랍니다.`
+    `자세한 티켓 상세내용은 cms 게시판을 참고해서 작성해 주시기 바랍니다.`
   ].join('\n');
 
   try {
@@ -102,6 +103,7 @@ async function sendDaouAlert(post, issueKey = null) {
 
     if (res.ok) {
       console.log(`✅ 다우메신저 전송 완료 [${post.postId}]`);
+      insertLog(post);
     } else {
       console.error(`❌ 전송 실패 [${post.postId}]:`, res.status);
     }
@@ -111,7 +113,7 @@ async function sendDaouAlert(post, issueKey = null) {
 }
 
 // ────────────────────────────────────────
-// WinCMS 스크래핑
+// cms 스크래핑
 // ────────────────────────────────────────
 async function getBrowser() {
   if (!browser || !browser.isConnected()) {
@@ -130,7 +132,7 @@ async function login(page) {
 
   // waitForNavigation 대신 타임아웃으로 대기
   await page.waitForTimeout(5000);
-  console.log('✅ WinCMS 로그인 완료 - URL:', page.url());
+  console.log('✅ cms 로그인 완료 - URL:', page.url());
 }
 
 async function scrapePosts(page) {
@@ -217,7 +219,7 @@ async function checkNewPosts() {
       console.log('전화    :', post.phone);
       console.log('내용    :', post.content);
       console.log('담당    :', post.handler);
-      console.log('관련자  :', ['김나연', '이동훈', '정수지', '황재웅']);
+      console.log('관련자  :', ['김유신', '박혁거세', '이순신', '홍길동']);
       console.log('일시    :', post.date);
       console.log('중복    :', notifiedIds.has(post.postId) ? '중복 - 스킵' : '신규');
       console.log('----------------------------------');
@@ -227,11 +229,11 @@ async function checkNewPosts() {
       let issueKey = null;
       try {
         const result = await createJiraTicket({
-          summary:        `[WinCMS] ${post.content} ${post.phone}`,
-          customerInfo:   [post.company, 'wincms'],
+          summary:        `[cms] ${post.content} ${post.phone}`,
+          customerInfo:   [post.company, 'cms'],
           receiptContent: post.content,
-          assignee:       '황재웅',
-          relatedUsers:   ['김나연', '이동훈', '정수지', '황재웅'],
+          assignee:       '홍길동',
+          relatedUsers:   ['김유신', '박혁거세', '이순신', '홍길동'],
           priority:       '3',
         });
         issueKey = result.issueKey;
