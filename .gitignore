@@ -4,3 +4,7 @@ logs
 tags
 node_modules
 .env
+*.db
+*.db-shm
+*.db-wal
+insert_mock.js
