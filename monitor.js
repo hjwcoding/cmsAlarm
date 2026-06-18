@@ -117,7 +117,10 @@ async function sendDaouAlert(post, issueKey = null) {
 // ────────────────────────────────────────
 async function getBrowser() {
   if (!browser || !browser.isConnected()) {
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({
+    headless: true,
+    args: ['--disable-gpu', '--disable-software-rasterizer'],
+  });
   }
   return browser;
 }
@@ -252,13 +255,3 @@ async function checkNewPosts() {
     await page.close();
   }
 }
-
-// 매 5분마다 실행
-cron.schedule('*/1 * * * *', async () => {
-  console.log(`\n[${new Date().toISOString()}] 스케줄 실행`);
-  await checkNewPosts();
-});
-
-// 시작 시 즉시 1회 실행
-console.log('모니터링 시작...');
-checkNewPosts();
