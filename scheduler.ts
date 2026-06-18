@@ -1,4 +1,4 @@
-typescript// scheduler.ts
+// scheduler.ts
 
 import cron from 'node-cron';
 import { checkNewPosts } from './monitor';

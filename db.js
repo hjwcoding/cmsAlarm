@@ -1,9 +1,9 @@
 const Database = require('better-sqlite3');
-const db = new Database('./wincms_history.db');
+const db = new Database('./cms_history.db');
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS monitor_log (
-    index       INTEGER PRIMARY KEY AUTOINCREMENT,
+    idx         INTEGER PRIMARY KEY AUTOINCREMENT,
     post_id     TEXT UNIQUE NOT NULL,
     detected_at TEXT NOT NULL
   )

@@ -1,5 +1,5 @@
 const Database = require('better-sqlite3');
-const db = new Database('./wincms_history.db');
+const db = new Database('./cms_history.db');
 
 const rows = db.prepare(`
   SELECT idx, post_id, detected_at
