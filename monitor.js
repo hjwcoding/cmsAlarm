@@ -255,3 +255,5 @@ async function checkNewPosts() {
     await page.close();
   }
 }
+
+module.exports = { checkNewPosts };
