@@ -163,8 +163,7 @@ async function scrapePosts(page) {
       // a.sname 없으면 스킵
       if (!hasSname) continue;
       // 전달/등록 아니면 스킵
-      // if (td7Text !== '전달' && td7Text !== '등록') continue;
-      if (td7Text !== '진행') continue;
+      if (td7Text !== '전달' && td7Text !== '등록') continue;
 
       // 위로 올라가며 접수 정보 행 찾기
       let infoTds = tds; // 기본값: 같은 행
@@ -228,29 +227,26 @@ export async function checkNewPosts() {
       console.log('----------------------------------');
 
       if (notifiedIds.has(post.postId)) continue;
-
-      // ───── DB 저장 (이것만 살림) ─────
       insertLog(post);
 
-      // let issueKey = null;
-      // try {
-      //   const result = await createJiraTicket({
-      //     summary:        `[cms] ${post.content} ${post.phone}`,
-      //     customerInfo:   [post.company, 'cms'],
-      //     receiptContent: post.content,
-      //     assignee:       '홍길동',
-      //     relatedUsers:   ['김유신', '박혁거세', '이순신', '홍길동'],
-      //     priority:       '3',
-      //   });
-      //   issueKey = result.issueKey;
-      //   console.log(`✅ Jira 티켓 생성: ${issueKey}`);
-      // } catch (err) {
-      //   console.error('❌ Jira 티켓 생성 실패:', err.message);
-      // }
+      try {
+        const result = await createJiraTicket({
+          summary:        `[cms] ${post.content} ${post.phone}`,
+          customerInfo:   [post.company, 'cms'],
+          receiptContent: post.content,
+          assignee:       '홍길동',
+          relatedUsers:   ['김유신', '박혁거세', '이순신', '홍길동'],
+          priority:       '3',
+        });
+        issueKey = result.issueKey;
+        console.log(`✅ Jira 티켓 생성: ${issueKey}`);
+      } catch (err) {
+        console.error('❌ Jira 티켓 생성 실패:', err.message);
+      }
 
-      // await sendDaouAlert(post, issueKey);
+      await sendDaouAlert(post, issueKey);
 
-      // notifiedIds.add(post.postId);
+      notifiedIds.add(post.postId);
     }
   } catch (err) {
     console.error('체크 중 오류:', err);
